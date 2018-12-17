@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.js"></script>
+    <script type="text/javascript" src="../js/popper.js"></script>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/erp.2.0.css">
+    <link rel="stylesheet" href="../css/open-iconic/css/open-iconic-bootstrap.css">
+
+    <title>反馈管理</title>
+</head>
+<body>
+<!-- 反馈 feedback 的添加/修改页面-->
+<div class="container">
+    <!-- 筛选表单 -->
+    <!--/*@thymesVar id="record" type="cn.pup.erp.iteration.entity.Feedback"*/-->
+    <h2 class="h2"><span th:text="${record.feedbackId != null} ? '编辑':'添加新'"></span>反馈</h2>
+    <div id="edit-form">
+        <!-- action 的路径，thymeleaf 好像把本页面的 context 自动拼在前面，（/iteration/dept/)-->
+        <!-- method 必须写，th:object 中应写初始化本页面后台装入 Model 的实体类变量，这样可以在提交的时候传回 Controller-->
+        <form id="editFeedbackForm" th:action="@{edit}" th:method="post" th:name="deptFilterForm" th:object="${record}">
+            <!-- 增加隐含域，指明 edit 时的请求方式为 PUT-->
+            <input type="hidden" name="_method" value="put" th:if="${record.feedbackId != null}"/>
+            <!-- 把没显示的属性隐藏起来，这样可以再传回去更新用，不然好像传回的属性值为 null
+            feedback_id, is_has_attachment, replier, gmt_reply, creator, gmt_create, modifier,
+            gmt_modified
+            -->
+            <input type="hidden" name="feedbackId" th:value="${record.feedbackId}">
+            <input type="hidden" name="isHasAttachment" th:value="${record.isHasAttachment}">
+            <input type="hidden" name="replier" th:value="${record.replier}">
+            <input type="hidden" name="creator" th:value="${record.creator}">
+            <input type="hidden" name="modifier" th:value="${record.modifier}">
+            <!-- 日期需要转换成 Controller 中转换方法规定的格式，以保证转换无误-->
+            <input type="hidden" name="gmtReply" th:value="${#dates.format(record.gmtReply, 'yyyy-MM-dd')} ">
+            <input type="hidden" name="gmtCreate" th:value="${#dates.format(record.gmtCreate, 'yyyy-MM-dd')} ">
+            <input type="hidden" name="gmtModified" th:value="${#dates.format(record.gmtModified, 'yyyy-MM-dd')} ">
+
+            <!-- 新增 Feedback 要填写的字段
+             feedback_title, module, category, type, feedback_content,
+            -->
+            <div class="row pt-2 pb-1">
+                <div class="form-inline col row m-0 p-0">
+                    <label for="f1" class="m-2">标题：</label>
+                    <!-- 文本输入框只需将 name 属性指定为实体类的属性名 -->
+                    <input type="text" class="form-control col" id="f1" name="feedbackTitle"
+                           th:value="${record.feedbackId != null} ? ${record.feedbackTitle}"/>
+                </div>
+            </div>
+            <div class="row pt-2 pb-1">
+                <div class="form-inline col row m-0 p-0">
+                    <label for="f2" class="m-2">模块：</label>
+                    <select class="col form-control" type="text" id="f2" th:field="${record.module}">
+                        <!-- 空的选项不要写 value，会导致 String 转换 bool 失败，后台报空指针异常-->
+                        <option value="" th:selected="${record.module==null} or ${record.module==''}"></option>
+                        <!--/*@thymesVar id="modules" type="cn.pup.erp.iteration.entity.Item"*/-->
+                        <!--/*@thymesVar id="module" type="cn.pup.erp.iteration.entity.Item"*/-->
+                        <option
+                                th:selected="${record.feedbackId!=null} ? ${module.itemName==record.module}"
+                                th:value="${module.itemName}"
+                                th:each="module:${modules}"
+                                th:text="${module.itemName}">
+                        </option>
+                    </select>
+                </div>
+                <div class="form-inline col row m-0 p-0">
+                    <label for="f3" class="m-2">分类：</label>
+                    <select class="col form-control" type="text" id="f3" th:field="${record.category}">
+                        <!-- 空的选项不要写 value，会导致 String 转换 bool 失败，后台报空指针异常-->
+                        <option value="" th:selected="${record.category==null} or ${record.category==''}"></option>
+                        <!--/*@thymesVar id="categories" type="cn.pup.erp.iteration.entity.Item"*/-->
+                        <!--/*@thymesVar id="category" type="cn.pup.erp.iteration.entity.Item"*/-->
+                        <option th:selected="${record.feedbackId!=null} ? ${category.itemName==record.category}"
+                                th:value="${category.itemName}" th:each="category:${categories}"
+                                th:text="${category.itemName}">1
+                        </option>
+                    </select>
+                </div>
+                <div class="form-inline col row m-0 p-0">
+                    <label for="f4" class="m-2">类型：</label>
+                    <select class="col form-control" type="text" id="f4" th:field="${record.type}">
+                        <!-- 空的选项不要写 value，会导致 String 转换 bool 失败，后台报空指针异常-->
+                        <option value="" th:selected="${record.type==null} or ${record.type==''}"></option>
+                        <!--/*@thymesVar id="types" type="cn.pup.erp.iteration.entity.Item"*/-->
+                        <!--/*@thymesVar id="type" type="cn.pup.erp.iteration.entity.Item"*/-->
+                        <option th:selected="${record.feedbackId!=null} ? ${type.itemName==record.type}"
+                                th:value="${type.itemName}" th:each="type:${types}" th:text="${type.itemName}">1
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="row pt-2 pb-1">
+                <label for="f5" class="m-2">内容：</label>
+                <!-- 文本输入框只需将 name 属性指定为实体类的属性名 -->
+                <textarea class="form-control col" rows="5" id="f5" name="feedbackContent"
+                          th:text="${record.feedbackId != null} ? ${record.feedbackContent}"></textarea>
+            </div>
+            <!-- 修改 Feedback 要填写的字段 reply, is_valid, feedbackStatus-->
+            <div class=" row" th:if="${record.feedbackId != null}">
+                <label for="f6" class="m-2">答复：</label>
+                <!-- 文本输入框只需将 name 属性指定为实体类的属性名 -->
+                <textarea class="form-control col" rows="5" id="f6" name="reply"
+                          th:text="${record.feedbackId != null} ? ${record.reply}"></textarea>
+            </div>
+            <div class="row pt-2 pb-1" th:if="${record.feedbackId != null}">
+                <div class="form-inline col row m-0 p-0">
+                    <label for="f2" class="m-2">处理状态：</label>
+                    <select class="col form-control" type="text" id="f2" th:field="${record.feedbackStatus}">
+                        <!--/*@thymesVar id="status" type="cn.pup.erp.iteration.entity.Item"*/-->
+                        <!--/*@thymesVar id="stat" type="cn.pup.erp.iteration.entity.Item"*/-->
+                        <option
+                                th:selected="${record.feedbackId!=null} ? ${stat.itemName==record.feedbackStatus}"
+                                th:value="${stat.itemName}"
+                                th:each="stat:${status}"
+                                th:text="${stat.itemName}">
+                        </option>
+                    </select>
+                </div>
+                <div class="form-inline col row m-0 p-0">
+                    <label for="f3" class="m-2">有效状态：</label>
+                    <select class="col form-control" type="text" id="f3" name="isValid">
+                        <option value="1" th:selected="${record.isValid} ">有效</option>
+                        <option value="0" th:selected="${!record.isValid} ">无效</option>
+                    </select>
+                </div>
+                <div class="form-inline col row m-0 p-0">
+
+                </div>
+            </div>
+            <div class="form-inline">
+                <a href="#" class="btn btn-secondary m-3" onclick="resetForm()">重置</a>
+                <button class="btn btn-primary m-3" type="submit">保存</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script>
+    function resetForm() {
+        $("#editFeedbackForm :input").not(":button, :submit, :reset, :hidden").val("").removeAttr("checked").remove("selected");
+    }
+</script>
+</html>

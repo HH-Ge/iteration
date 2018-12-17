@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.pup.erp.iteration.mapper.DepartmentMapper">
+
+    <resultMap id="BaseResultMap" type="cn.pup.erp.iteration.entity.Department">
+        <!-- Generator 根据表结构自动生成的结果集映射 -->
+        <id column="department_id" jdbcType="INTEGER" property="departmentId"/>
+        <result column="department_name" jdbcType="VARCHAR" property="departmentName"/>
+        <!-- 如果数据表中的列属性为 tinyint(1)，Generator 会将属性设为布尔型-->
+        <result column="is_valid" jdbcType="BIT" property="isValid"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="modifier" jdbcType="VARCHAR" property="modifier"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        <!-- Generator 自动生成 -->
+        delete from tbl_department
+        where department_id = #{departmentId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="cn.pup.erp.iteration.entity.Department">
+        <!-- Generator 自动生成 -->
+        insert into tbl_department (department_id, department_name, is_valid,
+        creator, gmt_create, modifier, gmt_modified)
+        values (#{departmentId,jdbcType=INTEGER}, #{departmentName,jdbcType=VARCHAR}, #{isValid,jdbcType=BIT},
+        #{creator,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR},
+        #{gmtModified,jdbcType=TIMESTAMP})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="cn.pup.erp.iteration.entity.Department">
+        <!-- Generator 自动生成 -->
+        update tbl_department
+        set department_name = #{departmentName,jdbcType=VARCHAR},
+        is_valid = #{isValid,jdbcType=BIT},
+        creator = #{creator,jdbcType=VARCHAR},
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+        modifier = #{modifier,jdbcType=VARCHAR},
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+        where department_id = #{departmentId,jdbcType=INTEGER}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT td.department_id,
+               td.department_name,
+               td.is_valid,
+               td.creator,
+               td.gmt_create,
+               td.modifier,
+               td.gmt_modified
+        FROM tbl_department as td
+        where td.department_id = #{departmentId,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        <!-- 对 Generator 生成的方法进行了修改，改为模糊查询 -->
+        SELECT
+        td.department_id,
+        td.department_name,
+        td.is_valid,
+        td.creator,
+        td.gmt_create,
+        td.modifier,
+        td.gmt_modified
+        FROM tbl_department as td
+        WHERE 1 = 1
+        <if test="record.departmentName != null and record.departmentName != '' ">and td.department_name like
+            #{record.departmentName, jdbcType=VARCHAR}
+        </if>
+        <if test="record.creator != null and record.creator != '' ">and creator like
+            #{record.creator, jdbcType=VARCHAR}
+        </if>
+        <if test="record.modifier != null and record.modifier != '' ">and modifier like
+            #{record.modifier, jdbcType=VARCHAR}
+        </if>
+        <if test="record.isValid != null ">and td.is_valid <![CDATA[=]]> #{record.isValid, jdbcType=BIT}</if>
+        <if test="record.departmentId != null">and td.department_id <![CDATA[=]]>
+            #{record.departmentId, jdbcType=INTEGER}
+        </if>
+        <if test="record.gmtCreate != null ">and td.gmt_create <![CDATA[>=]]> #{record.gmtCreate}</if>
+        <if test="record.gmtModified != null ">and td.gmt_modified <![CDATA[>=]]> #{record.gmtModified}</if>
+        <if test="gmtCreateMax != null ">and td.gmt_create <![CDATA[<=]]> #{gmtModifiedMax}</if>
+        <if test="gmtModifiedMax != null ">and td.gmt_modified <![CDATA[<=]]> #{gmtModifiedMax}</if>
+
+
+    </select>
+</mapper>

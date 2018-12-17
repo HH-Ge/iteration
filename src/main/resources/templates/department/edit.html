@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.js"></script>
+    <script type="text/javascript" src="../js/popper.js"></script>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/erp.2.0.css">
+    <link rel="stylesheet" href="../css/open-iconic/css/open-iconic-bootstrap.css">
+
+    <title>部门管理</title>
+</head>
+<body>
+<!-- 显示部门列表（页码导航），筛选表单，新建按钮，每行有修改和删除操作按钮-->
+<div class="container">
+    <!-- 筛选表单 -->
+    <h2 class="h2"><span th:text="${dept.departmentId != null} ? '编辑':'添加新'"></span>部门</h2>
+    <div id="filter-form">
+        <!-- action 的路径，thymeleaf 好像把本页面的 context 自动拼在前面，（/iteration/dept/)-->
+        <!-- method 必须写，th:object 中应写初始化本页面后台装入 Model 的实体类变量，这样可以在提交的时候传回 Controller-->
+        <!--/*@thymesVar id="dept" type="cn.pup.erp.iteration.entity.Department"*/-->
+        <form id="addDeptForm" th:action="@{edit}" th:method="post" th:name="deptFilterForm" th:object="${dept}">
+            <!-- 增加隐含域，指明 edit 时的请求方式为 PUT-->
+            <input type="hidden" name="_method" value="put" th:if="${dept.departmentId != null}"/>
+
+            <!-- 把没显示的属性隐藏起来，这样可以再传回去更新用，不然好像传回的属性值为 null -->
+            <input type="hidden" name="departmentId" th:value="${dept.departmentId}">
+            <input type="hidden" name="creator" th:value="${dept.creator}">
+            <!-- 日期需要转换成 Controller 中转换方法规定的格式，以保证转换无误-->
+            <input type="hidden" name="gmtCreate" th:value="${#dates.format(dept.gmtCreate, 'yyyy-MM-dd HH:mm:ss')} ">
+
+            <div class="form-inline">
+                <label for="f1" class="m-2">部门名称：</label>
+                <!-- 文本输入框只需将 name 属性指定为实体类的属性名 -->
+                <input type="text" class="form-control m-2" id="f1" name="departmentName"
+                       th:value="${dept.departmentId != null} ? ${dept.departmentName}"/>
+            </div>
+            <div class="form-inline">
+                <label for="f2" class="m-2">状态：</label>
+                <!-- 文本输入框只需将 name 属性指定为实体类的属性名 -->
+                <input type="radio" class="form-control m-2" id="f2" name="isValid"
+                       th:value="1" th:checked="${dept.departmentId != null} ? ${dept.isValid==true}"/>
+                <label for="f2" class="m-2">有效</label>
+                <input type="radio" class="form-control m-2" id="f3" name="isValid"
+                       th:value="0" th:checked="${dept.departmentId != null} ? ${dept.isValid==false}"/>
+                <label for="f3" class="m-2">无效</label>
+            </div>
+            <div class="form-inline">
+                <a href="#" class="btn btn-secondary m-3" onclick="resetForm()">重置</a>
+                <button class="btn btn-primary m-3" type="submit">保存</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+<script>
+    function resetForm() {
+        $("#addDeptForm :input").not(":button, :submit, :reset, :hidden").val("").removeAttr("checked").remove("selected");
+    }
+</script>
+</html>

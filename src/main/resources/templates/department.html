@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.js"></script>
+    <script type="text/javascript" src="../js/popper.js"></script>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/erp.2.0.css">
+    <link rel="stylesheet" href="../css/open-iconic/css/open-iconic-bootstrap.css">
+
+    <title>部门管理</title>
+</head>
+<body>
+<!-- 显示部门列表（页码导航），筛选表单，新建按钮，每行有修改和删除操作按钮-->
+<div class="container-fluid">
+    <!-- 筛选表单 -->
+    <div id="filter-form">
+        <!-- action 的路径，thymeleaf 好像把本页面的 context 自动拼在前面，（/iteration/dept/)-->
+        <!-- method 必须写，th:object 中应写初始化本页面后台装入 Model 的实体类变量，这样可以在提交的时候传回 Controller-->
+        <form th:action="@{filter}" th:method="post" th:name="deptFilterForm" th:object="${condition}">
+            <div class="card bg-light border rounded mt-2 mb-2">
+                <div class="card-header  text-white p-2">
+                    <strong>筛选条件</strong>
+                </div>
+                <div class="card-body pt-1 pb-2">
+                    <div class="row pt-2 pb-1">
+                        <div class="form-inline col row m-0 p-0">
+                            <label for="f1">部门名称：</label>
+                            <!-- 文本输入框只需将 name 属性指定为实体类的属性名 -->
+                            <input type="text" class="col form-control" id="f1" name="departmentName"
+                                   th:value="${condition.departmentName}">
+                        </div>
+                        <div class="form-inline col row m-0">
+                            <label for="f2">创建者：</label>
+                            <input type="text" class="col form-control" id="f2" name="creator"
+                                   th:value="${condition.creator}">
+                        </div>
+                        <div class=" form-inline col row m-0">
+                            <label for="f3">更新者：</label>
+                            <input type="text" class="col form-control" id="f3" name="modifier"
+                                   th:value="${condition.modifier}">
+                        </div>
+                        <div class=" form-inline col row m-0">
+                            <label for="f4">状态：</label>
+                            <select class="col form-control" type="text" id="f4" name="isValid">
+                                <option value=null th:selected="${condition.isValid==null}"></option>
+                                <option value="1"
+                                        th:selected="${condition.isValid==true}">有效
+                                </option>
+                                <option value="0"
+                                        th:selected="${condition.isValid==false}">无效
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer p-2">
+                    <div class="row">
+                        <div class="col text-center">
+                            <input th:type="reset" class="btn bg-card-header text-light">
+                            <input th:type="submit" class="btn bg-card-header text-light" value="筛选"></div>
+                        <div class="col text-center">
+                            <a href="/dept/add" class="btn btn-success" data-toggle="modal"
+                               data-target="#add-department-Modal">新建部门</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <!-- 部门列表 -->
+    <div id="dept-list">
+        <table class="table table-striped table-hover border-bottom">
+            <thead class="card-header">
+            <tr>
+                <th>部门ID</th>
+                <th>部门名称</th>
+                <th>状态</th>
+                <th>创建者ID</th>
+                <th>创建者</th>
+                <th>创建时间</th>
+                <th>更新者ID</th>
+                <th>更新者</th>
+                <th>更新时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--/*@thymesVar id="department" type="cn.pup.erp.iteration.entity.Department"*/-->
+            <!--/*@thymesVar id="depts" type="cn.pup.erp.iteration.entity.Department"*/-->
+            <tr th:each=" department : ${ depts}">
+                <td th:text="${ department.departmentId}">部门ID</td>
+                <td th:text="${ department.departmentName}">部门名称</td>
+                <td th:text="${ department.isValid} ? '有效' : '无效' ">状态</td>
+                <td th:text="${ department.creatorId} ">创建者ID</td>
+                <td th:text="${ department.creator} ">创建者</td>
+                <!--//${#dates.format(emp.birth, 'yyyy-MM-dd HH:mm')}-->
+                <td th:text="${#dates.format(department.gmtCreate, 'yyyy-MM-dd HH:mm')} ">创建时间</td>
+                <td th:text="${ department.modifierId} ">更新者ID</td>
+                <td th:text="${ department.modifier} ">更新者</td>
+                <td th:text="${#dates.format(department.gmtModified, 'yyyy-MM-dd HH:mm')} ">更新时间</td>
+                <td>
+                    <div class="d-inline">
+                        <a class="btn btn-success" th:href="@{edit?id=} + ${ department.departmentId}">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                    </div>
+                    <div class="d-inline">
+                        <a class="btn  btn-danger" th:href="@{delete?id=} +  ${ department.departmentId}">
+                            <span class="oi oi-trash"></span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- 分页信息 -->
+    <div id="page-Info" class="row">
+        <div class="form-inline col row m-0 text-left">
+            <span class="mr-2">每页</span>
+            <select name="tiaoshu" class="form-control col-1">
+                <option value="15">15</option>
+                <option value="30">30</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <span class="m-2">条</span>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item " data-th-classappend="${pageInfo.isFirstPage} ? 'disabled' : ''"><a
+                            class="page-link"
+                            th:href="'list?pageNum=1&pageSize='+ ${pageInfo.pageSize}">首页</a></li>
+                    <li class="page-item" data-th-classappend="${pageInfo.isFirstPage} ? 'disabled' : ''">
+                        <a class="page-link"
+                           th:href="'list?pageNum='+ ${pageInfo.pageNum - 1} + '&pageSize=' + ${pageInfo.pageSize}">
+                            <span class="oi oi-chevron-left"></span>
+                        </a>
+                    </li>
+
+                    <li class="page-item" data-th-each="i : ${pageInfo.navigatepageNums}"
+                        data-th-classappend="${(pageInfo.pageNum) eq i} ? 'active' : ''">
+                        <a class="page-link" data-th-attr="pageIndex=${i} - 1"
+                           th:href="'list?pageNum=' + ${i } + '&pageSize=' + ${pageInfo.pageSize}">
+                            <span data-th-text="${i}"></span>
+                        </a>
+                    </li>
+                    <li class="page-item" data-th-classappend="${pageInfo.isLastPage} ? 'disabled' : ''">
+                        <a class="page-link"
+                           th:href="'list?pageNum=' + ${pageInfo.pageNum + 1} + '&pageSize=' + ${pageInfo.pageSize}">
+                            <span class="oi oi-chevron-right"></span>
+                        </a>
+                    </li>
+                    <li class="page-item" data-th-classappend="${pageInfo.isLastPage} ? 'disabled' : ''">
+                        <a class="page-link"
+                           th:href="'list?pageNum=' + ${pageInfo.pages} +'&pageSize='+ ${pageInfo.pageSize}">末页</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col text-right">
+            <span class="m-2">第</span>
+            <span th:text="${pageInfo.pageNum}" class="badge badge-info">1</span>
+            <span class="m-2">页，共</span>
+            <span th:text="${pageInfo.pages}" class="badge badge-info">9</span>
+            <span class="m-2">页，显示第</span>
+            <span th:text="${pageInfo.startRow}" class="badge badge-info">1</span>
+            <span class="m-2">到</span>
+            <span th:text="${pageInfo.endRow}" class="badge badge-info">15</span>
+            <span class="m-2">条，共</span>
+            <span th:text="${pageInfo.total}" class="badge badge-info">128</span>
+            <span class="ml-2">条</span>
+        </div>
+    </div>
+    <!-- 新建部门 -->
+    <div id="add-department-Modal" class="modal fade formModal" tabindex="-1" role="dialog"
+         aria-labelledby="zhidingzerenbianjiModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="width: 100%;box-shadow:10px 10px 5px grey">
+            <div class="modal-content">
+                <div class="modal-header bg-card-header text-light">
+                    <h5 class="modal-title" id="zhidingzerenbianjiModalLabel">新建部门</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form th:action="@{add}" th:method="post" th:name="addDepartmentForm" th:object="${newDepartment}">
+                    <div class="modal-body">
+                        部门名称：<input type="text" name="departmentName"/>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

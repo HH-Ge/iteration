@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HomePage</title>
+</head>
+<body>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>IS_VALID</th>
+    </tr>
+    <tr th:each=" department : ${ depts}">
+        <td th:text="${ department.departmentId}">Onions</td>
+        <td th:text="${ department.departmentName}">2.41</td>
+        <td th:text="${ department.isValid} ? '有效' : '无效' ">yes</td>
+    </tr>
+</table>
+
+</body>
+</html>

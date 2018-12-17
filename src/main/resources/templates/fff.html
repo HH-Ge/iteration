@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.js"></script>
+    <script type="text/javascript" src="../js/popper.js"></script>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/erp.2.0.css">
+    <link rel="stylesheet" href="../css/open-iconic/css/open-iconic-bootstrap.css">
+
+    <title>部门管理</title>
+</head>
+<body>
+<!-- 显示部门列表（页码导航），筛选表单，新建按钮，每行有修改和删除操作按钮-->
+<script>
+    $(function () {
+
+        $("#form :input").not(":button, :submit, :reset, :hidden").val("").removeAttr("checked").remove("selected");//核心
+    });
+    })
+
+</script>
+<div class="container-fluid">
+
+    <form id="form">
+        <input type="radio" checked="checked">
+        <input type="checkbox" checked="checked">
+        <select>
+            <option>option1</option>
+            <option selected="selected">option2</option>
+        </select>
+        <input type="text" value="text">
+
+        <input type="hidden" value="hidden">
+        <input type="button" value="button">
+        <input type="reset" value="reset">
+        <input type="submit" value="submit">
+    </form>
+
+    <button id="button">真正清空</button>
+</div>
+</body>
+</html>

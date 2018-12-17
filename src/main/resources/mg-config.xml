@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <!-- 指明数据库驱动的jar，不明白为啥非得是磁盘路径，官网说类路径也行，我试了好像不行-->
+    <classPathEntry location="F:\Maven_Repo\mysql\mysql-connector-java\5.1.46\mysql-connector-java-5.1.46.jar"/>
+
+    <context id="context" targetRuntime="MyBatis3Simple">
+        <commentGenerator>
+            <property name="suppressAllComments" value="false"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+        <!-- 数据库连接信息，不要使用 useSSL 属性，会报错 -->
+        <jdbcConnection userId="HH" password="123456" driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/iteration"/>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        <!-- 指定实体类的位置-->
+        <javaModelGenerator targetPackage="cn.pup.erp.iteration.entity" targetProject=".">
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        <!-- 指定 xxxMapper.xml 的位置-->
+        <sqlMapGenerator targetPackage="mapper" targetProject=".">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+        <!-- 指定 xxxMapper.java 的位置，实际上就是 DAO-->
+        <javaClientGenerator targetPackage="cn.pup.erp.iteration.mapper" type="XMLMAPPER" targetProject=".">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+        <!-- 指明要映射的表及对应的实体类名-->
+        <table schema="iteration" tableName="tbl_dictionary" domainObjectName="Item"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false">
+        </table>
+        <!-- 可以在这里继续添加表 -->
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../font/css/open-iconic-bootstrap.css">
+    <script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../js/popper.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.js"></script>
+    <title>Feedback List</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="card">
+        <form action="" id="filterForm">
+            <div class="card-header">
+                筛选条件
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-inline col">
+                        <label for="ff1">模块：</label>
+                        <select class="form-control col" id="ff1">
+                            <option value="编务">编务</option>
+                            <option value="印务">印务</option>
+                            <option value="储运">储运</option>
+                            <option value="发行">发行</option>
+                        </select>
+                    </div>
+                    <div class="form-inline col">
+                        <label for="ff2">关键字：</label>
+                        <input type="text" class="form-control" id="ff2">
+                    </div>
+
+                    <div class="form-inline col">
+                        <label for="ff3">反馈人：</label>
+                        <input type="text" class="form-control" id="ff3">
+                    </div>
+                    <div class="form-inline col">
+                        <label for="ff4">反馈部门：</label>
+                        <select class="form-control" id="ff4">
+                            <option value="文史">文史</option>
+                            <option value="经管">经管</option>
+                            <option value="法律">法律</option>
+                            <option value="社科">社科</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn-sm btn-secondary" type="reset"><span class="oi oi-x"></span></button>
+                <button class="btn-sm btn-primary" type="submit"><span class="oi oi-check"></span><span
+                        class="mx-2">筛选</span></button>
+            </div>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

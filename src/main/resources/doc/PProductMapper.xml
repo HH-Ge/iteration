@@ -1,0 +1,696 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.digitalpublishing.mapper.PProductMapper">
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+    <resultMap id="BaseResultMap" type="cn.digitalpublishing.model.PProduct">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="PRODUCT_TYPE_ID" property="productTypeId" jdbcType="VARCHAR"/>
+        <result column="DISPATCH_NOTE_ID" property="dispatchNoteId" jdbcType="VARCHAR"/>
+        <result column="PARENT_PRODUCT_ID" property="parentProductId" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="p_product_isbn" property="pProductIsbn" jdbcType="VARCHAR"/>
+        <result column="p_product_code_type" property="pProductCodeType" jdbcType="VARCHAR"/>
+        <result column="p_product_title" property="pProductTitle" jdbcType="VARCHAR"/>
+        <result column="p_product_translation" property="pProductTranslation" jdbcType="VARCHAR"/>
+        <result column="p_product_sub_title" property="pProductSubTitle" jdbcType="VARCHAR"/>
+        <result column="p_product_pub_year" property="pProductPubYear" jdbcType="VARCHAR"/>
+        <result column="p_product_page_num" property="pProductPageNum" jdbcType="INTEGER"/>
+        <result column="p_product_edition" property="pProductEdition" jdbcType="VARCHAR"/>
+        <result column="p_product_binding" property="pProductBinding" jdbcType="VARCHAR"/>
+        <result column="p_product_marc_flag" property="pProductMarcFlag" jdbcType="VARCHAR"/>
+        <result column="p_product_keyword" property="pProductKeyword" jdbcType="VARCHAR"/>
+        <result column="p_product_status" property="pProductStatus" jdbcType="VARCHAR"/>
+        <result column="p_product_price" property="pProductPrice" jdbcType="DECIMAL"/>
+        <result column="p_product_language" property="pProductLanguage" jdbcType="VARCHAR"/>
+        <result column="p_product_pub_by" property="pProductPubBy" jdbcType="VARCHAR"/>
+        <result column="p_product_pub_name" property="pProductPubName" jdbcType="VARCHAR"/>
+        <result column="p_product_editor_by" property="pProductEditorBy" jdbcType="VARCHAR"/>
+        <result column="p_product_editor_name" property="pProductEditorName" jdbcType="VARCHAR"/>
+        <result column="p_product_create_on" property="pProductCreateOn" jdbcType="TIMESTAMP"/>
+        <result column="p_product_update_on" property="pProductUpdateOn" jdbcType="TIMESTAMP"/>
+        <result column="p_product_flow_status" property="pProductFlowStatus" jdbcType="VARCHAR"/>
+        <result column="p_product_remark" property="pProductRemark" jdbcType="VARCHAR"/>
+        <result column="p_product_proposal_property" property="pProductProposalProperty" jdbcType="VARCHAR"/>
+        <result column="p_product_cd_flg" property="pProductCdFlg" jdbcType="VARCHAR"/>
+        <result column="p_product_import_flg" property="pProductImportFlg" jdbcType="VARCHAR"/>
+        <result column="p_product_first_author" property="pProductFirstAuthor" jdbcType="VARCHAR"/>
+        <result column="p_product_authors" property="pProductAuthors" jdbcType="VARCHAR"/>
+        <result column="p_product_translator" property="pProductTranslator" jdbcType="VARCHAR"/>
+        <result column="p_product_size" property="pProductSize" jdbcType="VARCHAR"/>
+        <result column="p_product_impression" property="pProductImpression" jdbcType="INTEGER"/>
+        <result column="p_product_first_num" property="pProductFirstNum" jdbcType="INTEGER"/>
+        <result column="p_product_total_num" property="pProductTotalNum" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 所有字段 -->
+    <sql id="Base_Column_List">
+        id,
+        PRODUCT_TYPE_ID,
+        PARENT_PRODUCT_ID,
+        DISPATCH_NOTE_ID,
+        code,
+        p_product_isbn,
+        p_product_code_type,
+        p_product_title,
+        p_product_translation,
+        p_product_sub_title,
+        p_product_pub_year,
+        p_product_page_num,
+        p_product_edition,
+        p_product_binding,
+        p_product_marc_flag,
+        p_product_keyword,
+        p_product_status,
+        p_product_price,
+        p_product_language,
+        p_product_pub_by,
+        p_product_pub_name,
+        p_product_editor_by,
+        p_product_editor_name,
+        p_product_create_on,
+        p_product_update_on,
+        p_product_flow_status,
+        p_product_remark,
+        p_product_proposal_property,
+        p_product_cd_flg,
+        p_product_import_flg,
+        p_product_first_author,
+        p_product_authors,
+        p_product_translator,
+        p_product_size,
+        p_product_impression,
+        p_product_first_num,
+        p_product_total_num
+    </sql>
+
+    <!-- 列表展示字段 -->
+    <sql id="Filter_Column_List">
+        id,
+        DISPATCH_NOTE_ID,
+        PRODUCT_TYPE_ID,
+        PARENT_PRODUCT_ID,
+        code,
+        p_product_isbn,
+        p_product_code_type,
+        p_product_title,
+        p_product_translation,
+        p_product_sub_title,
+        p_product_pub_year,
+        p_product_page_num,
+        p_product_edition,
+        p_product_binding,
+        p_product_marc_flag,
+        p_product_keyword,
+        p_product_status,
+        p_product_price,
+        p_product_language,
+        p_product_pub_by,
+        p_product_pub_name,
+        p_product_editor_by,
+        p_product_editor_name,
+        p_product_create_on,
+        p_product_update_on,
+        p_product_flow_status,
+        p_product_remark,
+        p_product_proposal_property,
+        p_product_cd_flg,
+        p_product_import_flg,
+        p_product_first_author,
+        p_product_authors,
+        p_product_translator,
+        p_product_size,
+        p_product_impression,
+        p_product_first_num,
+        p_product_total_num
+    </sql>
+
+    <!-- 根据主键查询产品信息 -->
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from p_product
+        where id<![CDATA[=]]>#{id, jdbcType=VARCHAR}
+    </select>
+
+    <!-- 查询所有产品信息 -->
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from p_product
+    </select>
+
+    <!-- 分页查询产品信息 -->
+    <select id="findPageCondition" resultMap="BaseResultMap" parameterType="PageInfo">
+        select
+        a.id,
+        b.name as PRODUCT_TYPE_ID,
+        d.p_product_title as PARENT_PRODUCT_ID,
+        a.code,
+        a.p_product_isbn,
+        a.p_product_code_type,
+        a.p_product_title,
+        a.p_product_translation,
+        a.p_product_sub_title,
+        a.p_product_pub_year,
+        a.p_product_page_num,
+        a.p_product_edition,
+        a.p_product_binding,
+        a.p_product_marc_flag,
+        a.p_product_keyword,
+        a.p_product_status,
+        a.p_product_price,
+        c.language_name as p_product_language,
+        f.name as p_product_pub_by,
+        a.p_product_pub_name,
+        e.name as p_product_editor_by,
+        a.p_product_editor_name,
+        a.p_product_create_on,
+        a.p_product_update_on,
+        a.p_product_flow_status,
+        a.p_product_remark,
+        a.p_product_proposal_property,
+        a.p_product_cd_flg,
+        a.p_product_import_flg,
+        <!--         	i.person_name as p_product_first_author, -->
+        <!--         	k.person_name as p_product_translator, -->
+        <!--         	p.person_name as p_product_authors, -->
+        a.p_product_first_author,
+        a.p_product_translator,
+        a.p_product_authors,
+        a.p_product_size,
+        a.p_product_impression,
+        a.p_product_first_num,
+        a.p_product_total_num
+        from p_product a
+        left join p_product_type b on a.PRODUCT_TYPE_ID = b.id
+        left join t_base_language c on a.p_product_language = c.id
+        left join p_product d on a.PARENT_PRODUCT_ID = d.id
+        left join T_AUTH_USER e on e.id = a.p_product_editor_by
+        left join T_AUTH_ORGANIZATION f on f.id = a.p_product_pub_by
+        left join CRM_TYPE_RS h on h.id = a.p_product_first_author
+        left join CRM_PERSON i on i.person_id = h.role_id
+        left join CRM_TYPE_RS j on j.id = a.p_product_translator
+        left join CRM_PERSON k on k.person_id = j.role_id
+        left join CRM_TYPE_RS o on o.id = a.p_product_authors
+        left join CRM_PERSON p on p.person_id = o.role_id
+        where 1 = 1
+        <if test="condition.code != null">and a.code <![CDATA[=]]> #{condition.code, jdbcType=VARCHAR}</if>
+        <if test="condition.pProductIsbn != null">and a.p_product_isbn like
+            #{condition.pProductIsbn, jdbcType=VARCHAR}
+        </if>
+        <if test="condition.pProductTitle != null">and a.p_product_title like
+            #{condition.pProductTitle, jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <!-- 模糊匹配产品-->
+    <select id="findLimitCondition" resultMap="BaseResultMap" parameterType="PageInfo">
+        select
+        a.id,
+        a.p_product_title,
+        a.p_product_isbn,
+        a.p_product_price,
+        p_product_first_author
+        from p_product a left join p_product_type b on a.PRODUCT_TYPE_ID=b.id
+        where 1 = 1 and a.p_product_status='1'
+        <if test="condition.code != null">and code <![CDATA[=]]> #{condition.code, jdbcType=VARCHAR}</if>
+        <if test="condition.pProductIsbn != null">and p_product_isbn <![CDATA[=]]>
+            #{condition.pProductIsbn, jdbcType=VARCHAR}
+        </if>
+        <if test="condition.pProductTitle != null">and p_product_title like
+            #{condition.pProductTitle, jdbcType=VARCHAR}
+        </if>
+        <if test="condition.productTypeCode != null">and b.code <![CDATA[=]]>
+            #{condition.productTypeCode, jdbcType=VARCHAR}
+        </if>
+        <if test="condition.productId != null">and a.id <![CDATA[=]]> #{condition.productId, jdbcType=VARCHAR}</if>
+    </select>
+
+
+    <!-- 删除产品信息 -->
+    <delete id="deleteById" parameterType="java.lang.String">
+        delete
+        from p_product
+        where id <![CDATA[=]]> #{id, jdbcType=VARCHAR}
+    </delete>
+
+    <!-- 插入产品信息 -->
+    <insert id="insert" parameterType="cn.digitalpublishing.model.PProduct">
+        insert into p_product (id,
+                               DISPATCH_NOTE_ID,
+                               PRODUCT_TYPE_ID,
+                               PARENT_PRODUCT_ID,
+                               code,
+                               p_product_isbn,
+                               p_product_code_type,
+                               p_product_title,
+                               p_product_translation,
+                               p_product_sub_title,
+                               p_product_pub_year,
+                               p_product_page_num,
+                               p_product_edition,
+                               p_product_binding,
+                               p_product_marc_flag,
+                               p_product_keyword,
+                               p_product_status,
+                               p_product_price,
+                               p_product_language,
+                               p_product_pub_by,
+                               p_product_pub_name,
+                               p_product_editor_by,
+                               p_product_editor_name,
+                               p_product_create_on,
+                               p_product_update_on,
+                               p_product_flow_status,
+                               p_product_remark,
+                               p_product_proposal_property,
+                               p_product_cd_flg,
+                               p_product_import_flg,
+                               p_product_first_author,
+                               p_product_authors,
+                               p_product_translator,
+                               p_product_size,
+                               p_product_impression,
+                               p_product_first_num,
+                               p_product_total_num)
+        values (#{id, jdbcType=VARCHAR},
+                #{dispatchNoteId, jdbcType=VARCHAR},
+                #{productTypeId, jdbcType=VARCHAR},
+                #{parentProductId, jdbcType=VARCHAR},
+                #{code, jdbcType=VARCHAR},
+                #{pProductIsbn, jdbcType=VARCHAR},
+                #{pProductCodeType, jdbcType=VARCHAR},
+                #{pProductTitle, jdbcType=VARCHAR},
+                #{pProductTranslation, jdbcType=VARCHAR},
+                #{pProductSubTitle, jdbcType=VARCHAR},
+                #{pProductPubYear, jdbcType=VARCHAR},
+                #{pProductPageNum, jdbcType=INTEGER},
+                #{pProductEdition, jdbcType=VARCHAR},
+                #{pProductBinding, jdbcType=VARCHAR},
+                #{pProductMarcFlag, jdbcType=VARCHAR},
+                #{pProductKeyword, jdbcType=VARCHAR},
+                #{pProductStatus, jdbcType=VARCHAR},
+                #{pProductPrice, jdbcType=DECIMAL},
+                #{pProductLanguage, jdbcType=VARCHAR},
+                #{pProductPubBy, jdbcType=VARCHAR},
+                #{pProductPubName, jdbcType=VARCHAR},
+                #{pProductEditorBy, jdbcType=VARCHAR},
+                #{pProductEditorName, jdbcType=VARCHAR},
+                #{pProductCreateOn, jdbcType=TIMESTAMP},
+                #{pProductUpdateOn, jdbcType=TIMESTAMP},
+                #{pProductFlowStatus, jdbcType=VARCHAR},
+                #{pProductRemark, jdbcType=VARCHAR},
+                #{pProductProposalProperty, jdbcType=VARCHAR},
+                #{pProductCdFlg, jdbcType=VARCHAR},
+                #{pProductImportFlg, jdbcType=VARCHAR},
+                #{pProductFirstAuthor, jdbcType=VARCHAR},
+                #{pProductAuthors, jdbcType=VARCHAR},
+                #{pProductTranslator, jdbcType=VARCHAR},
+                #{pProductSize, jdbcType=VARCHAR},
+                #{pProductImpression, jdbcType=INTEGER},
+                #{pProductFirstNum, jdbcType=INTEGER},
+                #{pProductTotalNum, jdbcType=INTEGER})
+    </insert>
+
+    <!-- 修改产品信息 -->
+    <update id="updateById" parameterType="cn.digitalpublishing.model.PProduct">
+        update p_product
+        <set>
+            <if test="productTypeId != null">
+                PRODUCT_TYPE_ID = #{productTypeId, jdbcType=VARCHAR},
+            </if>
+            <if test="parentProductId != null">
+                PARENT_PRODUCT_ID = #{parentProductId, jdbcType=VARCHAR},
+            </if>
+            <if test="code != null">
+                code = #{code, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductIsbn != null">
+                p_product_isbn = #{pProductIsbn, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductCodeType != null">
+                p_product_code_type = #{pProductCodeType, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductTitle != null">
+                p_product_title = #{pProductTitle, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductTranslation != null">
+                p_product_translation = #{pProductTranslation, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductSubTitle != null">
+                p_product_sub_title = #{pProductSubTitle, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductPubYear != null">
+                p_product_pub_year = #{pProductPubYear, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductPageNum != null">
+                p_product_page_num = #{pProductPageNum, jdbcType=INTEGER},
+            </if>
+            <if test="pProductEdition != null">
+                p_product_edition = #{pProductEdition, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductBinding != null">
+                p_product_binding = #{pProductBinding, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductMarcFlag != null">
+                p_product_marc_flag = #{pProductMarcFlag, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductKeyword != null">
+                p_product_keyword = #{pProductKeyword, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductStatus != null">
+                p_product_status = #{pProductStatus, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductPrice != null">
+                p_product_price = #{pProductPrice, jdbcType=DECIMAL},
+            </if>
+            <if test="pProductLanguage != null">
+                p_product_language = #{pProductLanguage, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductPubBy != null">
+                p_product_pub_by = #{pProductPubBy, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductPubName != null">
+                p_product_pub_name = #{pProductPubName, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductEditorBy != null">
+                p_product_editor_by = #{pProductEditorBy, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductEditorName != null">
+                p_product_editor_name = #{pProductEditorName, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductCreateOn != null">
+                p_product_create_on = #{pProductCreateOn, jdbcType=TIMESTAMP},
+            </if>
+            <if test="pProductUpdateOn != null">
+                p_product_update_on = #{pProductUpdateOn, jdbcType=TIMESTAMP},
+            </if>
+            <if test="pProductFlowStatus != null">
+                p_product_flow_status = #{pProductFlowStatus, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductRemark != null">
+                p_product_remark = #{pProductRemark, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductProposalProperty != null">
+                p_product_proposal_property = #{pProductProposalProperty, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductCdFlg != null">
+                p_product_cd_flg = #{pProductCdFlg, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductImportFlg != null">
+                p_product_import_flg = #{pProductImportFlg, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductFirstAuthor != null">
+                p_product_first_author = #{pProductFirstAuthor, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductAuthors != null">
+                p_product_authors = #{pProductAuthors, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductTranslator != null">
+                p_product_translator = #{pProductTranslator, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductSize != null">
+                p_product_size = #{pProductSize, jdbcType=VARCHAR},
+            </if>
+            <if test="pProductImpression != null">
+                p_product_impression = #{pProductImpression, jdbcType=INTEGER},
+            </if>
+            <if test="pProductFirstNum != null">
+                p_product_first_num = #{pProductFirstNum, jdbcType=INTEGER},
+            </if>
+            <if test="pProductTotalNum != null">
+                p_product_total_num = #{pProductTotalNum, jdbcType=INTEGER},
+            </if>
+        </set>
+        where id<![CDATA[=]]>#{id, jdbcType=VARCHAR}
+    </update>
+
+    <!-- 按条件查询产品信息 -->
+    <select id="findListByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from p_product
+        where 1 = 1
+        <if test="code != null">and code <![CDATA[=]]> #{code, jdbcType=VARCHAR}</if>
+        <if test="pProductIsbn != null">and p_product_isbn <![CDATA[=]]> #{pProductIsbn, jdbcType=VARCHAR}</if>
+        <if test="pProductTitle != null">and p_product_title <![CDATA[=]]> #{pProductTitle, jdbcType=VARCHAR}</if>
+        <if test="pProductPrice != null">and p_product_price <![CDATA[=]]> #{pProductPrice, jdbcType=DECIMAL}</if>
+        <if test="pProductEdition != null">and p_product_edition <![CDATA[=]]> #{pProductEdition, jdbcType=VARCHAR}</if>
+        <if test="pProductStatus != null">and p_product_status <![CDATA[=]]> #{pProductStatus, jdbcType=VARCHAR}</if>
+    </select>
+
+    <!-- 分页查询产品信息 -->
+    <select id="comprehensiveQuery" resultMap="BaseResultMap" parameterType="PageInfo">
+        select
+        a.id as id,
+        a.p_product_title as pProductTitle,
+        a.p_product_edition as pProductEdition,
+        a.p_product_isbn as pProductIsbn,
+        i.person_name as pProductFirstAuthor,
+        b.name as productTypeId,
+        a.p_product_price as pProductPrice,
+        e.name as pProductEditorBy,
+        f.name as pProductPubBy,
+        a.p_product_pub_year as pProductPubYear,
+        (select nvl(sum(amount),0) from p_income pi where pi.p_product_id = a.id) as productIncome,
+        (select nvl(sum(amount_money),0) from p_cost pc where pc.P_PRODUCT_ID = a.id) as productCost,
+        (select nvl(sum(pt_print_num),0) from pt_print pt where pt.P_PRODUCT_ID = a.id) as pProductTotalNum,
+        a.p_product_status as pProductStatus
+        from p_product a
+        left join p_product_type b on a.PRODUCT_TYPE_ID = b.id
+        left join T_AUTH_USER e on e.id = a.p_product_editor_by
+        left join T_AUTH_ORGANIZATION f on f.id = a.p_product_pub_by
+        left join CRM_TYPE_RS h on h.id = a.p_product_first_author
+        left join CRM_PERSON i on i.person_id = h.role_id
+        where 1 = 1
+        <if test="condition.codeLike != null">and (a.p_product_title like #{condition.codeLike, jdbcType=VARCHAR} or
+            i.person_name like #{condition.codeLike, jdbcType=VARCHAR} or a.p_product_isbn like
+            #{condition.codeLike, jdbcType=VARCHAR})
+        </if>
+        <if test="condition.pProductIsbnLike != null">and a.p_product_isbn like
+            #{condition.pProductIsbnLike, jdbcType=VARCHAR}
+        </if>
+        <if test="condition.pProductTitleLike != null">and a.p_product_title like
+            #{condition.pProductTitleLike, jdbcType=VARCHAR}
+        </if>
+        <if test="condition.pProductFirstAuthorLike != null">and i.person_name like
+            #{condition.pProductFirstAuthorLike, jdbcType=VARCHAR}
+        </if>
+        <if test="condition.beginProductPubYear != null">and a.p_product_pub_year <![CDATA[>=]]>
+            #{condition.beginProductPubYear, jdbcType=VARCHAR}
+        </if>
+        <if test="condition.endProductPubYear != null">and a.p_product_pub_year <![CDATA[<=]]>
+            #{condition.endProductPubYear, jdbcType=VARCHAR}
+        </if>
+        <if test="condition.pProductPubByLike != null">and f.name like
+            #{condition.pProductPubByLike, jdbcType=VARCHAR}
+        </if>
+        <if test="condition.productTypeId != null">and a.PRODUCT_TYPE_ID <![CDATA[=]]>
+            #{condition.productTypeId, jdbcType=VARCHAR}
+        </if>
+        <if test="condition.pProductStatus != null">and a.p_product_status <![CDATA[=]]>
+            #{condition.pProductStatus, jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <!-- 分页查询产品信息(合同综合查询) -->
+    <select id="dataGridForContractQuery" resultMap="BaseResultMap" parameterType="PageInfo">
+        select
+        a.id as id,
+        a.p_product_title as pProductTitle,
+        a.p_product_edition as pProductEdition,
+        a.p_product_isbn as pProductIsbn,
+        i.person_name as pProductFirstAuthor,
+        b.name as productTypeId,
+        a.p_product_price as pProductPrice,
+        e.name as pProductEditorBy,
+        f.name as pProductPubBy,
+        a.p_product_pub_year as pProductPubYear,
+        (select nvl(sum(amount),0) from p_income pi where pi.p_product_id = a.id) as productIncome,
+        (select nvl(sum(amount_money),0) from p_cost pc where pc.P_PRODUCT_ID = a.id) as productCost,
+        (select nvl(sum(pt_print_num),0) from pt_print pt where pt.P_PRODUCT_ID = a.id) as pProductTotalNum,
+        a.p_product_status as pProductStatus
+        from p_product a
+        left join p_product_type b on a.PRODUCT_TYPE_ID = b.id
+        left join T_AUTH_USER e on e.id = a.p_product_editor_by
+        left join T_AUTH_ORGANIZATION f on f.id = a.p_product_pub_by
+        left join CRM_TYPE_RS h on h.id = a.p_product_first_author
+        left join CRM_PERSON i on i.person_id = h.role_id
+        where 1 = 1
+        <if test="condition.codeLike != null">and (a.p_product_title like #{condition.codeLike, jdbcType=VARCHAR} or
+            i.person_name like #{condition.codeLike, jdbcType=VARCHAR} or a.p_product_isbn like
+            #{condition.codeLike, jdbcType=VARCHAR})
+        </if>
+        <if test="condition.pProductIsbnLike != null">and a.p_product_isbn like
+            #{condition.pProductIsbnLike, jdbcType=VARCHAR}
+        </if>
+        <if test="condition.pProductTitleLike != null">and a.p_product_title like
+            #{condition.pProductTitleLike, jdbcType=VARCHAR}
+        </if>
+        <if test="condition.pProductFirstAuthorLike != null">and i.person_name like
+            #{condition.pProductFirstAuthorLike, jdbcType=VARCHAR}
+        </if>
+        <if test="condition.beginProductPubYear != null">and a.p_product_pub_year <![CDATA[>=]]>
+            #{condition.beginProductPubYear, jdbcType=VARCHAR}
+        </if>
+        <if test="condition.endProductPubYear != null">and a.p_product_pub_year <![CDATA[<=]]>
+            #{condition.endProductPubYear, jdbcType=VARCHAR}
+        </if>
+        <if test="condition.pProductPubByLike != null">and f.name like
+            #{condition.pProductPubByLike, jdbcType=VARCHAR}
+        </if>
+        <if test="condition.productTypeId != null">and a.PRODUCT_TYPE_ID <![CDATA[=]]>
+            #{condition.productTypeId, jdbcType=VARCHAR}
+        </if>
+        <if test="condition.pProductStatus != null">and a.p_product_status <![CDATA[=]]>
+            #{condition.pProductStatus, jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <!-- 分页查询产品信息(产品合同关系表) -->
+    <select id="dataGridForProductContractRs" resultMap="BaseResultMap" parameterType="PageInfo">
+        SELECT
+        p.ID,
+        p.P_PRODUCT_TITLE,
+        p.P_PRODUCT_ISBN,
+        p.P_PRODUCT_PRICE,
+        p.CODE,
+        p.P_PRODUCT_FIRST_AUTHOR
+        FROM P_PRODUCT p
+        WHERE 1 = 1 AND p.P_PRODUCT_STATUS = '1'
+        <if test="condition.parentProductId != null">and p.PARENT_PRODUCT_ID <![CDATA[=]]>
+            #{condition.parentProductId, jdbcType=VARCHAR}
+        </if>
+        <if test="null != condition.productIds and condition.productIds.length != 0">
+            and p.ID not in
+            <foreach item="item" index="index" collection="condition.productIds" open="(" separator="," close=")">
+                #{condition.productIds[${index}]}
+            </foreach>
+        </if>
+        <if test="condition.pProductTitle != null">and ( p.P_PRODUCT_TITLE like
+            #{condition.pProductTitle, jdbcType=VARCHAR} or p.P_PRODUCT_ISBN like
+            #{condition.pProductTitle, jdbcType=VARCHAR} or p.P_PRODUCT_FIRST_AUTHOR like
+            #{condition.pProductTitle, jdbcType=VARCHAR} )
+        </if>
+    </select>
+
+    <!-- 按条件查询产品信息 -->
+    <select id="getSumCountForProductCockpit" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        t.NAME AS name,
+        COUNT(0) AS value
+        FROM P_PRODUCT p
+        LEFT JOIN P_PRODUCT_TYPE t on t.ID = p.PRODUCT_TYPE_ID
+        WHERE p.p_product_status = '1'
+        <if test="searchYear != null">and substr(p.p_product_pub_year,0,4) <![CDATA[=]]>
+            #{searchYear, jdbcType=VARCHAR}
+        </if>
+        GROUP BY p.PRODUCT_TYPE_ID,t.NAME
+    </select>
+
+    <select id="getSumCountQuarterForProductCockpitPub" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        '第'||to_char(to_date(p.p_product_pub_year,'yyyyMM'),'q')||'季度' AS resultDate,
+        t.NAME AS name,
+        COUNT(0) AS value
+        FROM P_PRODUCT p
+        LEFT JOIN T_AUTH_ORGANIZATION t on t.ID = p.P_PRODUCT_PUB_BY
+        WHERE p.p_product_status = '1'
+        <if test="searchYear != null">and substr(p.p_product_pub_year,0,4) <![CDATA[=]]>
+            #{searchYear, jdbcType=VARCHAR}
+        </if>
+        GROUP BY to_char(to_date(p.p_product_pub_year,'yyyyMM'),'q'), t.NAME
+        ORDER BY t.NAME,to_char(to_date(p.p_product_pub_year,'yyyyMM'),'q') ASC
+    </select>
+
+    <select id="getSumCountMonthForProductCockpitPub" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        to_char(to_date(p.p_product_pub_year,'yyyyMM'),'mm')||'月' AS resultDate,
+        t.NAME AS name,
+        COUNT(0) AS value
+        FROM P_PRODUCT p
+        LEFT JOIN T_AUTH_ORGANIZATION t on t.ID = p.P_PRODUCT_PUB_BY
+        WHERE p.p_product_status = '1'
+        <if test="searchYear != null">and substr(p.p_product_pub_year,0,4) <![CDATA[=]]>
+            #{searchYear, jdbcType=VARCHAR}
+        </if>
+        GROUP BY to_char(to_date(p.p_product_pub_year,'yyyyMM'),'mm'),t.NAME
+        ORDER BY t.NAME,to_char(to_date(p.p_product_pub_year,'yyyyMM'),'mm') ASC
+    </select>
+
+    <select id="getSumCountQuarterForProductCockpitSubject" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        '第'||to_char(to_date(p.p_product_pub_year,'yyyyMM'),'q')||'季度' AS resultDate,
+        sel.DISCOUNT_SUBJECT2 AS name,
+        COUNT(0) AS value
+        FROM P_PRODUCT p
+        LEFT JOIN P_DISPATCH_NOTE n on n.ID = p.DISPATCH_NOTE_ID
+        LEFT JOIN P_PROJECT_SELECTION sel on sel.ID = n.PROJECT_SELECTION_ID
+        WHERE p.p_product_status = '1'
+        <if test="searchYear != null">and substr(p.p_product_pub_year,0,4) <![CDATA[=]]>
+            #{searchYear, jdbcType=VARCHAR}
+        </if>
+        GROUP BY sel.DISCOUNT_SUBJECT2 ,to_char(to_date(p.p_product_pub_year,'yyyyMM'),'q')
+        ORDER BY sel.DISCOUNT_SUBJECT2 ,to_char(to_date(p.p_product_pub_year,'yyyyMM'),'q')
+    </select>
+
+    <select id="getSumCountMonthForProductCockpitSubject" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        to_char(to_date(p.p_product_pub_year,'yyyyMM'),'mm')||'月' AS resultDate,
+        sel.DISCOUNT_SUBJECT2 AS name,
+        COUNT(0) AS value
+        FROM P_PRODUCT p
+        LEFT JOIN P_DISPATCH_NOTE n on n.ID = p.DISPATCH_NOTE_ID
+        LEFT JOIN P_PROJECT_SELECTION sel on sel.ID = n.PROJECT_SELECTION_ID
+        WHERE p.p_product_status = '1'
+        <if test="searchYear != null">and substr(p.p_product_pub_year,0,4) <![CDATA[=]]>
+            #{searchYear, jdbcType=VARCHAR}
+        </if>
+        GROUP BY sel.DISCOUNT_SUBJECT2 ,to_char(to_date(p.p_product_pub_year,'yyyyMM'),'mm')
+        ORDER BY sel.DISCOUNT_SUBJECT2 ,to_char(to_date(p.p_product_pub_year,'yyyyMM'),'mm')
+    </select>
+
+    <select id="findTopPageCondition" resultMap="BaseResultMap" parameterType="PageInfo">
+        SELECT
+
+        a.P_PRODUCT_TITLE,
+        (
+        (SELECT case when sum(z.DISCOUNTED_PRICE) is null then 0 else sum(z.DISCOUNTED_PRICE) end FROM
+        IV_DELIVERY_ORDER_ITEM z left join IV_DELIVERY_ORDER y on y.id = z.iv_id where a.id=z.P_PRODUCT_ID
+        <if test="condition.year != null">and TO_CHAR (y.CREATE_ON, 'yyyy') <![CDATA[=]]>
+            #{condition.year, jdbcType=INTEGER}
+        </if>
+        )
+        -
+        (SELECT case when sum(z.BACK_AMOUNT) is null then 0 else sum(z.BACK_AMOUNT) end from O_RETURN_SALE_ITEM z left
+        join O_RETURN_SALE y on y.id=z.O_R_ID where z.P_PRODUCT_ID = a.id
+        <if test="condition.year != null">and TO_CHAR (y.CREATE_ON, 'yyyy') <![CDATA[=]]>
+            #{condition.year, jdbcType=INTEGER}
+        </if>
+        )
+        ) as p_product_price
+
+        FROM
+        P_PRODUCT A where 1=1 order by p_product_price DESC
+    </select>
+
+    <select id="findTopCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+
+        a.P_PRODUCT_TITLE,
+        (
+        (SELECT case when sum(z.DISCOUNTED_PRICE) is null then 0 else sum(z.DISCOUNTED_PRICE) end FROM
+        IV_DELIVERY_ORDER_ITEM z left join IV_DELIVERY_ORDER y on y.id = z.iv_id where a.id=z.P_PRODUCT_ID
+        <if test="year != null">and TO_CHAR (y.CREATE_ON, 'yyyy') <![CDATA[=]]> #{year, jdbcType=VARCHAR}</if>
+        )
+        -
+        (SELECT case when sum(z.BACK_AMOUNT) is null then 0 else sum(z.BACK_AMOUNT) end from O_RETURN_SALE_ITEM z left
+        join O_RETURN_SALE y on y.id=z.O_R_ID where z.P_PRODUCT_ID = a.id
+        <if test="year != null">and TO_CHAR (y.CREATE_ON, 'yyyy') <![CDATA[=]]> #{year, jdbcType=VARCHAR}</if>
+        )
+        ) as p_product_price
+
+        FROM
+        P_PRODUCT A where 1=1 order by p_product_price DESC
+    </select>
+</mapper>

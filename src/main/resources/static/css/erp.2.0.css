@@ -1,0 +1,62 @@
+.bg-blue-3 {
+    background-color: rgb(67, 142, 185);
+}
+
+.bg-blue-4 {
+    background-color: rgb(48, 126, 204);
+}
+
+.bg-blue-2 {
+    background-color: rgb(149, 184, 231);
+}
+
+.bg-blue-1 {
+    background-color: rgb(239, 243, 248);
+}
+
+.bg-card-header {
+
+    background-color: rgb(70, 130, 180);;
+}
+
+body {
+    font-family: Tahoma;
+    font-size: 1em;
+}
+
+.card-header {
+    background-color: steelblue;
+    color: white;
+}
+
+.card {
+    border-color: steelblue;
+}
+
+.bitianxiang {
+    color: orangered;
+}
+
+label {
+    margin: 0px;
+    padding: 0px;
+}
+
+ifame {
+    margin: 0px;
+    padding: 0px;
+}
+
+body * {
+    margin: 0px;
+    padding: 0px;
+}
+
+* {
+    padding-bottom: 4px;
+    padding-top: 4px;
+}
+
+textarea {
+    resize: none;
+}
